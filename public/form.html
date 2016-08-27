@@ -1,0 +1,218 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+
+        #heading
+        {
+            font-size: 60px;
+        }
+        #temprow
+        {
+            display: none;
+        }
+
+        #row3
+        {
+            display: none;
+        }
+
+        @media screen and (max-width: 850px){
+
+            #row
+            {
+                display: none;
+            }
+
+            #heading
+            {
+                font-size:50px;
+            }
+
+            #row2
+            {
+                display: none;
+            }
+
+            #row3
+            {
+                display: block;
+            }
+        }
+
+        @media screen and (max-width: 1000px){
+
+            #image1
+            {
+                display: none;
+            }
+
+            #image2
+            {
+                display: none;
+            }
+        }
+
+
+
+
+
+
+
+    </style>
+
+</head>
+<body style="background-color: #fffd80">
+<div class="container">
+    <br>
+
+
+    <div class="row" id="row2" style="background-color: #ff40a3 ; outline-color:green; outline-style:groove; outline-width: 13px">
+        <div class="  col-sm-3" >
+            <img src="assets/squirtle.png" id="image1" class="img-responsive" height="200" width="200">
+        </div>
+        <div class=" col-sm-6">
+            <h1 align="center" id="heading">REGISTRATION PORTAL</h1>
+        </div>
+
+        <div class="  col-sm-3">
+            <img src="assets/jolteon.png" id="image2" class="img-responsive" height="220" width="220">
+        </div>
+    </div>
+
+    <div class="row" id="row3">
+        <div class="col-xs-12">
+            <div class="jumbotron" style="font-size:50px; font-family:Serif;background-color: #ff40a3 ;
+        outline-color:green; outline-style:groove; outline-width: 10px">
+                <h1 align="center">REGISTRATION PORTAL</h1>
+            </div>
+        </div>
+    </div>
+
+    <br><br>
+    <div class="row" >
+
+        <div class="col-sm-12">
+            <p style="font-size: 30px"><strong>Fill in the details to create a new user</strong></p>
+            <div class="form-group">
+                <label for="usr"><strong>USERNAME:</strong></label>
+                <input type="text" class="form-control" id="usr" >
+            </div>
+
+            <div class="form-group">
+                <label for="age"><strong>AGE:</strong></label>
+                <input type="number" class="form-control" id="age" >
+            </div>
+
+            <div class="form-group">
+                <label for="gender"><strong>Choose your gender</strong></label><br>
+
+                <button type="button" class="btn btn-primary btn-lg" id="male">     &nbsp;&nbsp;&nbsp; Male    &nbsp;&nbsp;&nbsp;    </button>
+                <button type="button" class="btn btn-primary btn-lg" id="female"> &nbsp;&nbsp;&nbsp;Female &nbsp;&nbsp;&nbsp;</button>
+
+                <br><br>
+                <input type="text" class="form-control" id="gender" readonly>
+            </div>
+
+
+            <div class="form-group">
+                <label for="pswd"><strong>Password</strong></label>
+                <input type="password" class="form-control" id="pswd">
+            </div>
+
+            <div class="form-group">
+                <label for="pswd2"><strong>Re-enter the Password</strong></label>
+                <input type="password" class="form-control" id="pswd2">
+            </div>
+
+
+            <br>
+            <button type="button"class="btn btn-danger btn-block btn-lg"  style="box-shadow: 5px 5px 5px black" id="submit">Submit</button>
+            <br><br><br>
+        </div>
+    </div>
+
+    <div class="row" id="row">
+        <div class="col-sm-3" >
+            <img src="assets/gengar.png" class="img-responsive" height="140" width="140">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/vulpix.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/bulbasaur.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/starly.png" class="img-responsive" height="150" width="150">
+        </div>
+
+    </div>
+    <br><br>
+
+
+</div>
+
+
+
+
+<script src="jquery.js"></script>
+<script>
+
+    $('#male').click(function () {
+        $('#gender').val("Male");
+    });
+
+    $('#female').click(function () {
+
+        $('#gender').val("Female");
+    });
+
+    $('#submit').click(function () {
+
+        var obj = {};
+        obj.name= $('#usr').val();
+        obj.pswd = $('#pswd').val();
+
+        var pswd2 = $('#pswd2').val();
+        if( obj.name == "" ||  obj.pswd == "" ||  $('#age').val()=="" ||  $('#gender').val() == ""  || pswd2=="")
+        {
+            alert("PLEASE FILL ALL THE ENTRIES");
+            window.location.href="";
+        }
+
+        if(obj.pswd != pswd2)
+        {
+            alert("PLEASE FILL BOTH THE PASSWORDS CORRECTLY");
+            window.location.href="";
+        }
+
+        else
+        {
+            $.get('/newuser',obj,function (data,status) {
+
+                if(data=="no")
+                {
+                    alert("USERNAME ALREADY EXISTS");
+                }
+
+                else {
+
+                    localStorage.setItem('username',obj.name);
+                    localStorage.setItem('level',1);
+                    window.location.href = "nav.html";
+
+                }
+            });
+        }
+
+    });
+
+</script>
+</body>
+</html>

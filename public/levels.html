@@ -1,0 +1,238 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <style>
+        #row2
+        {
+            display: none;
+        }
+        @media screen and (max-width: 800px)
+        {
+            #row
+            {
+                display: none;
+            }
+
+            #row1
+            {
+                display: none;
+            }
+
+            #row2
+            {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body style="background-color: #fffd80">
+<div class="container">
+    <br><br><br>
+    <div class="jumbotron" style="background-color: aqua ;box-shadow: 15px 15px 8px" >
+        <h1 align="center" id="heading">LEVELS  &nbsp; UNLOCKED</h1>
+    </div>
+
+    <br><br>
+
+    <div class="row" id="row">
+        <div class="col-sm-3" >
+            <img src="assets/gengar.png" class="img-responsive" height="140" width="140">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/charmeleon.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/squirtle.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/ariados.png" class="img-responsive" height="150" width="150">
+        </div>
+
+    </div>
+    <br><br>
+    <div class="row" id="row1">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-danger btn-block btn-lg" id="press1"> PRESS THE BUTTON TO DISPLAY UNLOCKED LEVELS </button>
+        </div>
+    </div>
+    <div class="row" id="row2">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-danger btn-block btn-lg" id="press2"> DISPLAY UNLOCKED LEVELS </button>
+        </div>
+    </div>
+    <br><br>
+    <div class="row" style="visibility: hidden" id="fun">
+        <h2 align="center">SELECT THE DESIRED LEVEL TO START THE GAME</h2>
+        <br>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-4">
+
+            <button type="button" class="btn btn-success btn-lg btn-block" id="1">LEVEL1</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="2">LEVEL2</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="3">LEVEL3</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="4">LEVEL4</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="5">LEVEL5</button>
+            <br><br>
+        </div>
+
+        <div class="col-sm-2" >
+
+        </div>
+        <div class="col-sm-4">
+
+            <button type="button" class="btn btn-success btn-lg btn-block" id="6">LEVEL6</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="7">LEVEL7</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="8">LEVEL8</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="9">LEVEL9</button>
+            <br><br>
+            <button type="button" class="btn btn-success btn-lg btn-block" id="10">LEVEL10</button>
+            <br><br>
+        </div>
+        <div class="col-sm-1"></div>
+
+    </div>
+    <br><br>
+
+</div>
+<script src="jquery.js"></script>
+<script>
+
+    $(function () {
+
+        var obj ={};
+        var level;
+        obj.username = localStorage.getItem('username');
+        if(obj.username==null)
+        {
+            alert("NOT AUTHENTICATED REDIRECTING TO HOME PAGE");
+            window.location.href = "index.html";
+        }
+
+        $.get('/getlevel',obj,function (data,status) {
+
+            level = Number(data[0].level);
+            for(var i=level+1;i<=10;i++)
+            {
+                var temp_str = i.toString();
+                $("#" + temp_str).attr("class" , "btn btn-success btn-lg btn-block disabled");
+            }
+        });
+
+    });
+
+    $("#press1").click(function () {
+
+        $("#fun").css("visibility","visible")
+    });
+    $("#press2").click(function () {
+
+        $("#fun").css("visibility","visible")
+    });
+
+    $("#1").click(function () {
+
+        if($("#1").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',1);
+            window.location.href = "canvas.html";
+        }
+
+    });
+
+    $("#2").click(function () {
+        if($("#2").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',2);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#3").click(function () {
+
+        if($("#3").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',3);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#4").click(function () {
+
+        if($("#4").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',4);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#5").click(function () {
+
+        if($("#5").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',5);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#6").click(function () {
+
+        if($("#6").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',6);
+            window.location.href = "canvas.html";
+        }
+
+    });
+
+    $("#7").click(function () {
+
+        if($("#7").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',7);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#8").click(function () {
+
+        if($("#8").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',8);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#9").click(function () {
+
+        if($("#9").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',9);
+            window.location.href = "canvas.html";
+        }
+    });
+
+    $("#10").click(function () {
+
+        if($("#10").attr("class") == "btn btn-success btn-lg btn-block")
+        {
+            localStorage.setItem('level',10);
+            window.location.href = "canvas.html";
+        }
+    });
+
+
+</script>
+</body>
+</html>

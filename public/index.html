@@ -1,0 +1,168 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+
+    <style>
+        #div1
+        {
+            text-shadow: 3px 3px ;
+            box-shadow: 12px 12px 16px;
+
+        }
+        #heading
+        {
+            font-size: 80px;
+        }
+        .grad1 {
+
+            background: linear-gradient(red, yellow, green);
+
+        }
+
+        @media screen and (max-width: 768px)
+        {
+            #row1
+            {
+                display: none;
+            }
+
+            #row2
+            {
+                display: none;
+            }
+            #container
+            {
+                margin-right:5%;
+                margin-left: 5%;
+            }
+            #heading
+            {
+                font-family: Serif;
+                text-shadow: none;
+                font-size: 40px;
+            }
+        }
+
+    </style>
+</head>
+<body style="background-color: #a50eff">
+<br><br>
+
+<div class="container" id="container" style="background-color: #ffad36;">
+    <br>
+    <div class="jumbotron grad1" id="div1" style="background-color:yellowgreen">
+        <h1  id="heading" align="center">POKEMON GAME</h1>
+    </div>
+    <br>
+    <div class="row" id="row1">
+        <div class="col-sm-3" >
+            <img src="assets/bulbasaur.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/charmeleon.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/ariados.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/aipom.png" class="img-responsive" height="193" width="180">
+        </div>
+
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class=" col-xs-1 col-sm-2"></div>
+        <div class="col-xs-10 col-sm-8" style="background-color: aqua ;  box-shadow: 15px 15px 8px">
+            <h1 style="font-family: KacstDecorative ;font-size:50px" align="center">Want to play the Game </h1>
+            <br>
+            <div class="form-group">
+                <label for="usr"><strong>USERNAME:</strong></label>
+                <input type="text" class="form-control" id="usr">
+            </div>
+            <div class="form-group">
+                <label for="pswd"><strong>PASSWORD:</strong></label>
+                <input type="password" class="form-control" id="pswd">
+            </div>
+            <br>
+
+            <button type="button"class="btn btn-danger btn-block btn-lg" style=" box-shadow: 5px 5px 10px black"
+                    id="submit">Submit</button>
+            <br><br>
+            <a href="form.html" style="color:black"> <h2 align="center" > Create a new user</h2></a>
+
+        </div>
+        <div class=" col-xs-1 col-sm-2"></div>
+
+    </div>
+    <br><br><br><br>
+    <div class="row" id="row2">
+        <div class="col-sm-3" >
+            <img src="assets/starly.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/cubone.gif" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/vulpix.png" class="img-responsive" height="150" width="150">
+        </div>
+        <div class="col-sm-3">
+            <img src="assets/jiggles.png" class="img-responsive" height="180" width="180">
+        </div>
+
+    </div>
+
+</div>
+
+<br><br>
+
+<script src="jquery.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script>
+
+
+    $(function () {
+
+        localStorage.clear();
+
+    });
+
+    $('#submit').click(function () {
+
+        var obj= {
+            name:$("#usr").val(),
+            pswd:$('#pswd').val()
+        };
+
+        if( obj.name == '' ||  obj.pswd == '')
+        {
+            alert("PLEASE FILL ALL THE ENTRIES");
+            window.location.href="";
+        }
+
+        else{
+
+            $.get('/checkuser',obj,function (data,status) {
+
+                if(data.ans ==0)
+                {
+                    alert("INVALID USERNAME OR PASSWORD");
+                }
+                else{
+
+                    localStorage.setItem('username',obj.name);
+                    localStorage.setItem('level',data.level);
+                    window.location.href = "nav.html";
+                }
+            })
+        }
+
+    })
+
+
+</script>
+</body>
+</html>

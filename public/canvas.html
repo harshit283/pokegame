@@ -1,0 +1,279 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITLE</title>
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+    <style>
+
+        #mycanvas
+        {
+            border:2px solid blue;
+            background-image:url("assets/water.png");
+            background-size:cover;
+        }
+
+    </style>
+</head>
+<body style="background-color: lightpink">
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-sm-12">
+            <h1 align="center" style="font-style:italic ;font-family: fantasy; font-size: 50px; color:red";>
+                Reach the pokeball without colliding with the enemy pokemons
+            </h1>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-3"></div>
+
+        <div class="col-sm-6 ">
+            <h1 align="center" style="font-style:italic ;font-family: 'DejaVu Serif'; font-size: 30px; color:blue";>
+                Current Score
+            </h1>
+            <br>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>USERNAME</th>
+                    <th>CURRENT &nbsp;SCORE</th>
+                    <th>LEVEL</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td id="t1"></td>
+                    <td id="t2"></td>
+                    <td id="t3"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <canvas id="mycanvas" style="display:block" width="600" height="600" ></canvas>
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+    <br><br>
+
+</div>
+<script src="jquery.js"></script>
+<script>
+
+    var level,score=0;
+
+    if(localStorage.getItem('username')==null)
+    {
+        alert("NOT AUTHENTICATED REDIRECTING TO HOME PAGE");
+        window.location.href = "index.html";
+    }
+
+    $('#t1').text(localStorage.getItem('username'));
+    $("#t2").text(0);
+    $("#t3").text(localStorage.getItem('level'));
+
+    level = Number(localStorage.getItem('level'));
+
+
+    var canvas = document.getElementById("mycanvas");
+    var ctx= canvas.getContext('2d');
+
+    GAME_WIDTH =600;
+    GAME_HEIGHT = 600;
+    var game_over = false;
+    var sprites ={};
+    sprites.player = new Image();
+    sprites.player.src = "assets/pika.png";
+    sprites.goal =new Image();
+    sprites.goal.src = "assets/ball.png";
+    sprites.enemy = [];
+    sprites.enemy[0] =new Image();
+    sprites.enemy[0].src= "assets/bulbasaur.png";
+    sprites.enemy[1] =new Image();
+    sprites.enemy[1].src= "assets/gengar.png";
+    sprites.enemy[2] =new Image();
+    sprites.enemy[2].src= "assets/drowsy.png";
+    sprites.enemy[3] =new Image();
+    sprites.enemy[3].src= "assets/meow.png";
+    var enemy = [
+        {
+            x:100,
+            y:100,
+            w:50,
+            h: 50,
+            speedy:level*(0.1)
+        },
+
+        {
+            x:200,
+            y:200,
+            w:50,
+            h: 50,
+            speedy:(0.3)*level
+        },
+
+        {
+            x:300,
+            y:300,
+            w:50,
+            h: 50,
+            speedy:(0.6)*level
+        },
+        {
+            x:400,
+            y:400,
+            w:50,
+            h: 50,
+            speedy:(0.8)*level
+        }
+    ];
+
+    var player = {
+        x:10,
+        y:GAME_HEIGHT/2,
+        w:50,
+        h:50,
+        speedx:2,
+        is_moving :false
+    };
+
+    var goal = {
+        x:GAME_WIDTH-50,
+        y:GAME_HEIGHT/2,
+        w:50,
+        h:50
+    };
+
+
+    canvas.addEventListener("mousedown" , function () {
+
+        player.is_moving = true;
+    });
+
+    canvas.addEventListener("mouseup",function () {
+        player.is_moving = false;
+    });
+
+    canvas.addEventListener("touchstart",function(){
+        player.isMoving = true;
+    });
+
+    canvas.addEventListener("touchend",function(){
+        player.isMoving = false;
+    });
+
+    var is_colliding = function(r1,r2)
+    {
+        var con1=  Math.abs(r1.x - r2.x) <= Math.max(r1.w,r2.w) ;
+        var con2 =   Math.abs(r1.y - r2.y) <= Math.max(r1.h,r2.h) ;
+        if(con1 && con2)
+            return true;
+        else
+            return false;
+
+    };
+
+
+    var update = function ()
+    {
+        enemy.forEach(function (element , index) {
+            if(is_colliding(player,element))
+            {
+                game_over =true;
+                localStorage.setItem('result',"no");
+            }
+        });
+
+        if(is_colliding(player , goal))
+        {
+            game_over = true;
+            localStorage.setItem('result',"yes");
+        }
+
+
+        enemy.forEach(function (element,index) {
+
+            element.y += element.speedy;
+            if(element.y >= GAME_HEIGHT-50  || element.y <=0)
+                element.speedy *=-1;
+        });
+
+
+        if(player.is_moving ==true)
+        {
+            player.x += player.speedx;
+            score = score + 2*level;
+            $("#t2").text(score);
+        }
+    };
+
+
+
+    var draw = function () {
+
+        ctx.clearRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+        ctx.fillStyle = "green";
+        enemy.forEach(function (element,index) {
+            ctx.drawImage(sprites.enemy[index],element.x,element.y,element.w,element.h);
+        });
+        //DRAW PLAYER
+        ctx.fillStyle = "red";
+        //ctx.fillRect(player.x,player.y,player.w,player.h);
+        ctx.drawImage(sprites.player,player.x,player.y,player.w,player.h);
+        // DRAW GOAL
+        ctx.fillStyle = "yellow";
+        //ctx.fillRect(goal.x,goal.y,goal.w,goal.h);
+        ctx.drawImage(sprites.goal,goal.x,goal.y,goal.w,goal.h);
+    };
+
+
+    var render = function () {
+        draw();
+        update();
+        if(game_over==false)
+            window.requestAnimationFrame(render);
+
+        else
+        {
+            func();
+        }
+
+    };
+
+    render();
+
+    function func() {
+
+        var obj= {};
+        obj.username = localStorage.getItem('username');
+        console.log(obj.username);
+        console.log("hello");
+        if(localStorage.getItem('result') == "yes" )
+        {
+            obj.level = level+1;
+        }
+
+        else
+        {
+            obj.level = level;
+        }
+
+        obj.score = score;
+
+        $.get('/updatescore',obj,function (data,status) {
+
+            window.location.href = "dummy.html";
+        });
+    }
+
+</script>
+</body>
+
+</html>

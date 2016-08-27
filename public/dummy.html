@@ -1,0 +1,75 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>TITLE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.css">
+</head>
+<body style="background-color:#70ff43">
+<div class="container">
+    <br>
+    <div class="jumbotron" style="background-color:blueviolet ;outline-color:red; outline-style:dotted; outline-width: 10px">
+        <h1 align="center" style="color: gold" id="heading"></h1>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8">
+            <img src="assets/ash_with_pokemons.jpg" class="img-thumbnail" >
+        </div>
+        <div class="col-sm-2"></div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-xs-12">
+            <h2 align="center">SELECT THE FOLLOWING OPTIONS</h2>
+            <br>
+            <button type="button"class="btn btn-primary btn-block btn-lg" id="lb">VIEW LEADERBOARD</button>
+            <br><br>
+            <button type="button"class="btn btn-primary btn-block btn-lg" id="pr">VIEW LEVELS UNLOCKED</button>
+            <br><br>
+            <button type="button"class="btn btn-primary btn-block btn-lg" id="hp">GO TO HOME PAGE</button>
+            <br><br>
+            <button type="button"class="btn btn-primary btn-block btn-lg" id="game">PLAY AGAIN</button>
+            <br><br>
+        </div>
+    </div>
+</div>
+<script src="jquery.js"></script>
+<script>
+
+    $(function () {
+
+        if(localStorage.getItem('username')==null)
+        {
+            alert("NOT AUTHENTICATED REDIRECTING TO HOME PAGE");
+            window.location.href = "index.html";
+        }
+
+        if(localStorage.getItem('result') == "yes")
+            $("#heading").text("CONGRATULATIONS YOU WON THE GAME!!");
+        else
+            $("#heading").text("SORRY GAME OVER");
+    });
+
+
+    $("#lb").click(function () {
+        window.location.href = "leaderboard.html";
+    });
+
+    $("#pr").click(function () {
+        window.location.href = "levels.html";
+    });
+
+    $("#hp").click(function () {
+        window.location.href = "index.html";
+    });
+
+    $("#game").click(function () {
+        window.location.href = "canvas.html";
+    });
+
+</script>
+</body>
